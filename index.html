@@ -1,0 +1,284 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h1 {
+        color: white;
+        background-color: cornflowerblue;
+        padding: 20px 40px 20px 40px;
+        border-bottom: 3px solid black;
+        text-decoration: underline;
+      }
+      .form input {
+        box-sizing: border-box;
+      }
+      .form label {
+        text-align: center;
+        font-weight: bold;
+      }
+      .button {
+        display:inline-flexbox;
+        justify-content: space-between;
+        margin-top: 10px;
+        text-align: center;
+        cursor: pointer;
+      }
+      .Designation {
+        padding: 0px 0px 0px 38px;
+        display: inline-block;
+      }
+      .Salary {
+        padding: 0px 0px 0px 66px;
+        display: inline-block;
+      }
+      .Email {
+        padding: 0px 0px 0px 75px;
+        display: inline-block;
+      }
+      .Mobile {
+        padding: 0px 0px 0px 63px;
+        display: inline-block;
+      }
+      .Qualification {
+        padding: 0px 0px 0px 28px;
+        display: inline-block;
+      }
+      .Manager {
+        padding: 0px 0px 0px 55px;
+        display: inline-block;
+      }
+      .option {
+        width: 170px;
+        text-align: center;
+      }
+      .form{
+        text-align: center;
+      }
+      table,
+      th,
+      td {
+        border: 1px solid black;
+      }
+      th {
+        background-color: rebeccapurple;
+        color: white;
+      }
+      body{
+        line-height: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="section1">
+      <h1>Employee Registration</h1>
+      <div class="form">
+          <label for="employee_name"
+            >Employee Name<span style="color: red">*</span>:</label>
+          <input type="text" id="employee_name" required />
+      </div>
+      <div class="form">
+          <label for="Designation">Designation:</label>
+          <div class="Designation">
+            <select class="option" id="Designation">
+              <option>CEO</option>
+              <option>Project Manger</option>
+              <option>Team Leader</option>
+            </select>
+          </div>
+      </div>
+      <div class="form">
+          <label for="Salary">Salary<span style="color: red">*</span>:</label>
+          <div class="Salary">
+            <input type="text" id="Salary" required />
+          </div>
+      </div>
+      <div class="form">
+          <label for="Email">Email<span style="color: red">*</span></label>
+          <div class="Email">
+            <input type="text" id="Email" required />
+          </div>
+      </div>
+      <div class="form">
+          <label for="Mobile">Mobile<span style="color: red">*</span>:</label>
+          <div class="Mobile">
+            <input type="number" id="Mobile" required />
+          </div>
+      </div>
+      <div class="form">
+        <label for=""></label>
+          <label for="Qualification">Qualification:</label>
+          <div class="Qualification">
+            <select class="option" id="Qualification">
+              <option>MBA</option>
+              <option>M.Tech</option>
+              <option>B.Tech</option>
+            </select>
+          </div>
+      </div>
+      <div class="form">
+        <b>
+          <label for="Manager">Manager:</label>
+          <div class="Manager">
+            <input type="text" id="Manager" />
+          </div>
+      </div>
+      <div class="button">
+        <button id="submit" type="submit" onclick="myfun()">
+          submit
+        </button>
+        <button type="reset" id="reset">Reset</button>
+      </div>
+    </div>
+    <script>
+      var selectRow=null
+      function myfun() {
+        const data = getData();
+        console.log(data);
+        const data1 = validate(data);
+        console.log(data1);
+        if(data1){
+        if(!selectRow){
+          table(data);
+        }else{
+        upDateTable(data)
+        }
+        }else{
+          window.alert("Please fill")
+        }
+      }
+      function getData() {
+        const obj = {
+          employee_name: document.getElementById("employee_name").value,
+          designation: document.getElementById("Designation").value,
+          salary: document.getElementById("Salary").value,
+          email: document.getElementById("Email").value,
+          mobile: document.getElementById("Mobile").value,
+          qualification: document.getElementById("Qualification").value,
+          manager: document.getElementById("Manager").value,
+        };
+        return obj;
+      }
+      function validate(obj) {
+        const arr = ["employee_name", "salary", "email", "mobile"].every(
+          (val) => {
+            return !!obj[val];
+          }
+        );
+        return arr
+      }
+      function table(data){
+        var table = document.getElementById("myTable");
+        const row = table.insertRow();
+        row.insertCell(0).textContent = data.employee_name;
+        row.insertCell(1).textContent = data.designation;
+        row.insertCell(2).textContent = data.salary;
+        row.insertCell(3).textContent = data.email;
+        row.insertCell(4).textContent = data.mobile;
+        row.insertCell(5).textContent = data.qualification;
+        row.insertCell(6).textContent = data.manager; 
+        row.insertCell(7).innerHTML ="<button onclick=onEdit(this)>Edit</button><button onclick=onDelete(this)>Delete</button>"
+        reset()     
+      }
+      function onEdit(data){
+        selectRow=data.parentElement.parentElement
+        console.log(selectRow)
+        document.getElementById("employee_name").value=selectRow.cells[0].innerHTML
+        document.getElementById("Designation").value=selectRow.cells[1].innerHTML
+        document.getElementById("Salary").value=selectRow.cells[2].innerHTML
+        document.getElementById("Email").value=selectRow.cells[3].innerHTML
+        document.getElementById("Mobile").value=selectRow.cells[4].innerHTML
+        document.getElementById("Qualification").value=selectRow.cells[5].innerHTML
+        document.getElementById("Manager").value=selectRow.cells[6].innerHTML
+        document.getElementById("submit").innerHTML="update"
+      }
+      function upDateTable(data){
+        selectRow.cells[0].innerHTML=data.employee_name
+        selectRow.cells[1].innerHTML=data.designation
+        selectRow.cells[2].innerHTML=data.salary
+        selectRow.cells[3].innerHTML=data.email
+        selectRow.cells[4].innerHTML=data.mobile
+        selectRow.cells[5].innerHTML=data.qualification
+        selectRow.cells[6].innerHTML=data.manager
+        reset()  
+      }
+      function reset(){
+        document.getElementById("employee_name").value=""
+        document.getElementById("Designation").value=""
+        document.getElementById("Salary").value=""
+        document.getElementById("Email").value=""
+        document.getElementById("Mobile").value=""
+        document.getElementById("Qualification").value=""
+        document.getElementById("Manager").value=""
+        document.getElementById("submit").innerHTML="submit"
+        selectRow=null
+      }
+      function onDelete(data) {
+        selectRow = data.parentElement.parentElement;
+        if(confirm(`Are you sure you want delete ${selectRow.cells[0].innerHTML}`)==true){
+        const rowIndex = selectRow.rowIndex;
+        document.getElementById("myTable").deleteRow(rowIndex);
+        }
+        
+        reset();
+      }
+    </script>
+    <h1>Register Employee</h1>
+    <table style="width: 100%" id="myTable">
+      <thead>
+        <tr>
+          <th>Employee Name</th>
+          <th>Designation</th>
+          <th>Salary</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>Qualification</th>
+          <th>Manager</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Abc</td>
+          <td>CEO</td>
+          <td>50,000.00</td>
+          <td>Abc@revalsys.com</td>
+          <td>9876543210</td>
+          <td>MBA</td>
+          <td>No reporting employee</td>
+          <td>
+            <button onclick="onEdit(this)">Edit</button>
+            <button onclick="onDelete(this)">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Abcd</td>
+          <td>Project Manager</td>
+          <td>20,000.00</td>
+          <td>Abcd@revalsys.com</td>
+          <td>8976543210</td>
+          <td>M.Tech</td>
+          <td>Abcd</td>
+          <td>
+            <button onclick="onEdit(this)">Edit</button>
+            <button onclick="onDelete(this)">Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Abcde</td>
+          <td>Team Leader</td>
+          <td>25,000.00</td>
+          <td>Abcde@revalsys.com</td>
+          <td>7896543210</td>
+          <td>B.Tech</td>
+          <td>Abcde</td>
+          <td>
+            <button onclick="onEdit(this)">Edit</button>
+            <button onclick="onDelete(this)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
